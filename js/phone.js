@@ -12,7 +12,7 @@ function loadPhone(searchText){
 
     let phonesContainer = document.getElementById('phones-container');
      phonesContainer.innerHTML='';
-    
+     phones = phones.slice(0, 5);
     for(let i =0;i<phones.length;i++){
         let phone = phones[i];
         console.log(phone);
@@ -24,9 +24,7 @@ function loadPhone(searchText){
                     <div class="card-body">
                       <h5 class="card-title">${phone.phone_name}</h5>
                       <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-
-      `  ;
+                    </div> `;
 
       phonesContainer.appendChild(phoneDiv);
     } 
