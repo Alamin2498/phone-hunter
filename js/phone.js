@@ -1,14 +1,14 @@
 
-
-function loadPhone(searchText){
+// fetch part
+function loadPhone(searchText,dataLimit){
   let url =`https://openapi.programming-hero.com/api/phones?search=${searchText}`
   fetch(url)
     .then(response =>response.json())  
-    .then(data => displayPhones(data.data))
+    .then(data => displayPhones(data.data,dataLimit));
 }
 
-
-   const displayPhones = phones =>{
+//display part
+   const displayPhones = (phones,dataLimit) =>{
     let phonesContainer = document.getElementById('phones-container');
 
 
@@ -20,7 +20,17 @@ function loadPhone(searchText){
       noPhone.style.display='none';
     }
      phonesContainer.innerHTML='';
-     phones = phones.slice(0, 5);
+
+     let showAll = document.getElementById('showAll');
+     if(dataLimit && phones.length>10){
+      phones = phones.slice(0, 5);
+      showAll.classList.remove('d-none');
+     }
+
+     else{
+      showAll.classList.add('d-none');
+     }
+    
     for(let i =0;i<phones.length;i++){
         let phone = phones[i];
         console.log(phone);
@@ -36,18 +46,26 @@ function loadPhone(searchText){
 
       phonesContainer.appendChild(phoneDiv);
 
-      toggleSpinner(false);
+     
     } 
+    toggleSpinner(false);
    }
 
+   //search part
+
+    function searchProcess(dataLimit){
+      let searchText = document.getElementById('searchText').value;
+      loadPhone(searchText);
+      toggleSpinner(true);
+      loadPhone(searchText,dataLimit);
+    }
+
    let searchField = document.getElementById('searchBtn').addEventListener('click',function(){
-    
-    let searchText = document.getElementById('searchText').value;
-    console.log(searchText);
-    console.log('button clicked');
-    loadPhone(searchText);
-    toggleSpinner(true);
+    searchProcess(10);
+   
    })
+
+   //loading spinner part
 
    function toggleSpinner(isloading){
     let  loader = document.getElementById('loader');
@@ -59,7 +77,12 @@ function loadPhone(searchText){
     }
    }
    
-
+   
+   //show all part
+  
+  document.getElementById('showAllBtn').addEventListener('click',function(){
+    searchProcess();
+  })
 
     
 
