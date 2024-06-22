@@ -4,13 +4,21 @@ function loadPhone(searchText){
   let url =`https://openapi.programming-hero.com/api/phones?search=${searchText}`
   fetch(url)
     .then(response =>response.json())  
-    .then(data => displayPhones(data.data));
+    .then(data => displayPhones(data.data))
 }
 
 
    const displayPhones = phones =>{
-
     let phonesContainer = document.getElementById('phones-container');
+
+
+    let noPhone = document.getElementById('noPhone');
+    if( phones.length ===0){
+     noPhone.style.display='block';
+    }
+    else{
+      noPhone.style.display='none';
+    }
      phonesContainer.innerHTML='';
      phones = phones.slice(0, 5);
     for(let i =0;i<phones.length;i++){
@@ -27,6 +35,8 @@ function loadPhone(searchText){
                     </div> `;
 
       phonesContainer.appendChild(phoneDiv);
+
+      toggleSpinner(false);
     } 
    }
 
@@ -36,8 +46,21 @@ function loadPhone(searchText){
     console.log(searchText);
     console.log('button clicked');
     loadPhone(searchText);
-
+    toggleSpinner(true);
    })
+
+   function toggleSpinner(isloading){
+    let  loader = document.getElementById('loader');
+    if(isloading){
+      loader.classList.remove('d-none')
+    }
+    else{
+      loader.classList.add('d-none');
+    }
+   }
+   
+
+
     
 
 loadPhone('iphone 12');
